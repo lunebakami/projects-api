@@ -10,6 +10,8 @@ class Project extends Model {
         sequelize,
       }
     );
+
+    return this;
   }
 }
 
