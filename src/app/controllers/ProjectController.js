@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Project from '../models/Project';
+import Task from '../models/Task';
 
 class ProjectController {
   async store(req, res) {
@@ -29,8 +30,24 @@ class ProjectController {
 
   async index(req, res) {
     const projects = await Project.findAll({});
+    const tasks = await Task.findAll({});
 
-    return res.json(projects);
+    const projectsWithTasks = projects.map(project => {
+      project.dataValues.projectTasks = [];
+      tasks.forEach(task => {
+        if (task.dataValues.projectId === project.dataValues.id) {
+          const projectTask = {
+            title: task.dataValues.title,
+            description: task.dataValues.description,
+          };
+          project.dataValues.projectTasks.push(projectTask);
+        }
+      });
+
+      return project;
+    });
+
+    return res.json(projectsWithTasks);
   }
 
   async update(req, res) {
