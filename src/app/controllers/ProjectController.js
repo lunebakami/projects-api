@@ -61,7 +61,7 @@ class ProjectController {
 
     const { title } = req.body;
 
-    const project = await Project.findByPk(req.params.id);
+    const { project } = req;
 
     if (title !== project.title) {
       const projectExists = await Project.findOne({ where: { title } });
@@ -77,11 +77,7 @@ class ProjectController {
   }
 
   async delete(req, res) {
-    const project = await Project.findByPk(req.params.id);
-
-    if (!project) {
-      return res.status(400).json({ error: "This project doesn't exists!" });
-    }
+    const { project } = req;
 
     await project.destroy();
 
