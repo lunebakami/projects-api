@@ -4,8 +4,11 @@ import ProjectController from './app/controllers/ProjectController';
 import TaskController from './app/controllers/TaskController';
 
 import checkProjectMiddleware from './app/middlewares/checkProjectExists';
+import logRequests from './app/middlewares/logRequests';
 
 const routes = new Router();
+
+routes.use(logRequests);
 
 routes.post('/projects', ProjectController.store);
 routes.get('/projects', ProjectController.index);
